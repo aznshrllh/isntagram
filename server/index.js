@@ -96,6 +96,7 @@ import {
   typeDefs as userTypeDefs,
   resolvers as userResolever,
 } from "./schemas/userSchema.js";
+import { context } from "./helpers/context.js";
 
 const server = new ApolloServer({
   typeDefs: userTypeDefs,
@@ -104,6 +105,7 @@ const server = new ApolloServer({
 
 startStandaloneServer(server, {
   listen: { port: 4000 },
+  context,
 }).then(({ url }) => {
   console.log(`🚀  Server ready at: ${url}`);
 });
