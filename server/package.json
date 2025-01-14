@@ -4,6 +4,7 @@
   "description": "Imitate of instagram using React Native and Expo",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -12,6 +13,13 @@
   "type": "module",
   "dependencies": {
     "@apollo/server": "^4.11.3",
-    "graphql": "^16.10.0"
+    "bcryptjs": "^2.4.3",
+    "graphql": "^16.10.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "6.12"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.7",
+    "nodemon": "^3.1.9"
   }
 }
