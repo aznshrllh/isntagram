@@ -66,13 +66,6 @@ export const resolvers = {
       return await UserModel.create(newUser);
     },
     login: async (_, args) => {
-      // const { user } = contextValue;
-      // console.log("user", user);
-      // if (user) {
-      //   throw new Error("User already logged in");
-      // }
-
-      // console.log("contextValue", contextValue);
       const { login } = args;
       return await UserModel.login(login);
     },

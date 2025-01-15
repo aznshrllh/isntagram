@@ -105,11 +105,15 @@ import {
   typeDefs as postTypeDefs,
   resolvers as postResolvers,
 } from "./schemas/postSchema.js";
+import {
+  typeDefs as followDefs,
+  resolvers as followResolvers,
+} from "./schemas/followSchema.js";
 import { context } from "./helpers/context.js";
 
 const server = new ApolloServer({
-  typeDefs: [userTypeDefs, postTypeDefs],
-  resolvers: [userResolever, postResolvers],
+  typeDefs: [userTypeDefs, postTypeDefs, followDefs],
+  resolvers: [userResolever, postResolvers, followResolvers],
 });
 
 startStandaloneServer(server, {
