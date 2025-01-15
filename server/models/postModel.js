@@ -99,6 +99,24 @@ export default class PostModel {
     }
   }
 
+  static async deleteCommentFromPost(postId, commentId, username) {
+    try {
+      const post = await this.collection().findOneAndUpdate(
+        { _id: new ObjectId(postId) },
+        {
+          $pull: {
+            comments: { _id: new ObjectId(commentId), username },
+          }, // Use username instead of userId
+          $set: { updatedAt: new Date().toISOString() },
+        },
+        { returnDocument: "after" }
+      );
+      return post.value;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   static async likePost(postId, username) {
     try {
       const post = await this.collection().findOneAndUpdate(

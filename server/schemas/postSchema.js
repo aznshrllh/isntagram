@@ -29,7 +29,7 @@ export const typeDefs = `#graphql
   type Query {
   getPosts: [Post]
   getPost(id: ID!): Post
-  getPostsByUser(userId: ID): [Post]
+  getPostsByUser(userId: ID!): [Post]
   }
 
   input PostInput {
@@ -42,6 +42,7 @@ export const typeDefs = `#graphql
   createPost(newPost: PostInput): Post
   deletePost(id: ID!): Post
   addCommentToPost(postId: ID!, comment: String!): Post
+  deleteCommentFromPost(postId: ID!, commentId: ID!): Post
   likePost(postId: ID!): Post
   }
   `;
@@ -105,6 +106,23 @@ export const resolvers = {
       return {
         ...posted,
         message: "Comment added",
+      };
+    },
+
+    deleteCommentFromPost: async (_, args, contextValue) => {
+      const { postId, commentId } = args;
+      const user = await contextValue.authN();
+      const username = user.username;
+
+      if (!username)
+        throw new Error("User must be logged in to delete a comment");
+      await PostModel.deleteCommentFromPost(postId, commentId, username);
+
+      const deleted = await PostModel.findPostById(postId);
+      // return postCommentDeleted and message: "Comment deleted"
+      return {
+        ...deleted,
+        message: "Comment deleted",
       };
     },
 
