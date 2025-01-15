@@ -59,11 +59,5 @@ export const resolvers = {
 
       return await FollowModel.follow(newFollow);
     },
-    // deleteFollow: async (_, args, contextValue) => {
-    //   const { id } = args;
-    //   const user = await contextValue.authN();
-    //   const userId = user._id;
-    //   return await FollowModel.unfollow(id, userId);
-    // },
   },
 };
