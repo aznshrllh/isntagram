@@ -90,22 +90,31 @@
 //   await import("dotenv/config");
 // }
 
+// importing the dotenv package
+if (process.env.NODE_ENV !== "production") {
+  await import("dotenv/config");
+}
+
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import {
   typeDefs as userTypeDefs,
   resolvers as userResolever,
 } from "./schemas/userSchema.js";
+import {
+  typeDefs as postTypeDefs,
+  resolvers as postResolvers,
+} from "./schemas/postSchema.js";
 import { context } from "./helpers/context.js";
 
 const server = new ApolloServer({
-  typeDefs: userTypeDefs,
-  resolvers: userResolever,
+  typeDefs: [userTypeDefs, postTypeDefs],
+  resolvers: [userResolever, postResolvers],
 });
 
 startStandaloneServer(server, {
   listen: { port: 4000 },
-  context,
+  context: context,
 }).then(({ url }) => {
   console.log(`🚀  Server ready at: ${url}`);
 });

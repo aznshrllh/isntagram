@@ -9,6 +9,7 @@ export const generateToken = (payload) => {
 
 export const verifyToken = (token) => {
   try {
+    // console.log(token, "<<<token");
     const decoded = jwt.verify(token, secret);
     return decoded;
   } catch (error) {

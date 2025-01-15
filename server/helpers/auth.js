@@ -1,26 +1,19 @@
 import { verifyToken } from "./jwt.js";
 import UserModel from "../models/userModel.js";
 
-export const checkAuth = async (authorization) => {
-  if (!authorization) {
-    throw new Error("Authorization header is required");
-  }
+export const checkAuth = async (req) => {
+  const accessToken = req.headers.authorization;
+  if (!accessToken) throw new Error("Unauthorized");
 
-  const [type, token] = authorization.split(" ");
-  if (type !== "Bearer") {
-    throw new Error("Authorization type is invalid");
-  }
+  const token = accessToken.split(" ")[1];
+  // if (type !== "Bearer") throw new Error("Unauthorized Different Type Token");
 
-  try {
-    const decoded = verifyToken(token);
-    const user = await UserModel.findUserById(decoded.userId);
+  const { userId } = verifyToken(token);
 
-    if (!user) {
-      throw new Error("User not found");
-    }
+  const user = await UserModel.findUserById(userId);
 
-    return user;
-  } catch (error) {
-    throw new Error("Authorization failed:" + error.message);
-  }
+  if (!user) throw new Error("Unauthorized");
+
+  const { password, ...rest } = user;
+  return rest;
 };
