@@ -52,7 +52,7 @@ export default class PostModel {
   static async findPostByUserId(userId) {
     try {
       const posts = await this.collection()
-        .find({ userId: new ObjectId(userId) })
+        .find({ authorId: new ObjectId(userId) })
         .toArray();
       return posts;
     } catch (error) {
@@ -76,12 +76,40 @@ export default class PostModel {
     }
   }
 
-  static async addCommentToPost(postId, comment) {
+  static async addCommentToPost(postId, comment, username) {
     try {
       const post = await this.collection().findOneAndUpdate(
         { _id: new ObjectId(postId) },
         {
-          $push: { comments: comment },
+          $push: {
+            comments: {
+              _id: new ObjectId(),
+              username, // Use username instead of userId
+              comment,
+              createdAt: new Date().toISOString(),
+            },
+          },
+          $set: { updatedAt: new Date().toISOString() },
+        },
+        { returnDocument: "after" } // Use 'after' to return the updated document
+      );
+      return post.value; // Return the updated document
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  static async likePost(postId, username) {
+    try {
+      const post = await this.collection().findOneAndUpdate(
+        { _id: new ObjectId(postId) },
+        {
+          $push: {
+            likes: {
+              username,
+              createdAt: new Date().toISOString(),
+            },
+          }, // Use username instead of userId
           $set: { updatedAt: new Date().toISOString() },
         },
         { returnDocument: "after" }
@@ -92,57 +120,19 @@ export default class PostModel {
     }
   }
 
-  static async likePost(postId, userId) {
+  static async unlikePost(postId, username) {
     try {
       const post = await this.collection().findOneAndUpdate(
         { _id: new ObjectId(postId) },
         {
-          $addToSet: { likes: userId },
+          $pull: {
+            likes: { username },
+          }, // Use username instead of userId
           $set: { updatedAt: new Date().toISOString() },
         },
         { returnDocument: "after" }
       );
       return post.value;
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-
-  static async unlikePost(postId, userId) {
-    try {
-      const post = await this.collection().findOneAndUpdate(
-        { _id: new ObjectId(postId) },
-        {
-          $pull: { likes: userId },
-          $set: { updatedAt: new Date().toISOString() },
-        },
-        { returnDocument: "after" }
-      );
-      return post.value;
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-
-  static async isLikedByUser(postId, userId) {
-    try {
-      const post = await this.collection().findOne({
-        _id: new ObjectId(postId),
-        likes: userId,
-      });
-      return post ? true : false;
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-
-  static async toggleLikePost(postId, userId) {
-    try {
-      if (await this.isLikedByUser(postId, userId)) {
-        return await this.unlikePost(postId, userId);
-      } else {
-        return await this.likePost(postId, userId);
-      }
     } catch (error) {
       throw new Error(error);
     }
