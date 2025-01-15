@@ -1,6 +1,6 @@
 # isntagram
 
-Imitate of instagram using React Native and Expo
+A full-stack Instagram clone built with React Native, Expo, and GraphQL
 
 API DOCS
 
