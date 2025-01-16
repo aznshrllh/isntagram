@@ -49,7 +49,57 @@ export default class UserModel {
   }
 
   static async findUserById(id) {
-    return await this.collection().findOne({ _id: new ObjectId(id) });
+    const userId = new ObjectId(id);
+    const user = await this.collection()
+      .aggregate([
+        { $match: { _id: userId } },
+        {
+          $lookup: {
+            from: "follows",
+            localField: "_id",
+            foreignField: "followerId",
+            as: "following",
+          },
+        },
+        {
+          $lookup: {
+            from: "follows",
+            localField: "_id",
+            foreignField: "followingId",
+            as: "followers",
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "following.followingId",
+            foreignField: "_id",
+            as: "followingUsers",
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "followers.followerId",
+            foreignField: "_id",
+            as: "followerUsers",
+          },
+        },
+        {
+          $addFields: {
+            following: "$followingUsers",
+            followers: "$followerUsers",
+          },
+        },
+        // { $project: { followingUsers: 0, followerUsers: 0 } },
+      ])
+      .toArray();
+
+    if (!user.length) {
+      throw new Error("User not found");
+    }
+
+    return user[0];
   }
 
   static async getUsers() {
