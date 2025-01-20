@@ -4,16 +4,14 @@ import { StyleSheet, Text, View } from "react-native";
 import { client } from "./config/apollo";
 import { AuthContextProvider } from "./contexts/auth";
 import { NavigationContainer } from "@react-navigation/native";
+import StackNav from "./routes/StackNav";
 
 export default function App() {
   return (
     <ApolloProvider client={client}>
       <AuthContextProvider>
         <NavigationContainer>
-          <View style={styles.container}>
-            <Text>Open up App.js to start working on your app!</Text>
-            <StatusBar style="auto" />
-          </View>
+          <StackNav />
         </NavigationContainer>
       </AuthContextProvider>
     </ApolloProvider>
