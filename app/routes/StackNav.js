@@ -1,5 +1,8 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SecureStore from "expo-secure-store";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useContext, useEffect, useState } from "react";
+import { ActivityIndicator } from "react-native";
+
 import { AuthContext } from "../contexts/auth";
 
 import HomeScreen from "../screens/HomeScreen";
@@ -9,8 +12,6 @@ import SearchScreen from "../screens/SearchScreen";
 import DetailPostScreen from "../screens/DetailPost";
 import LoginScreen from "../screens/Login";
 import RegisterScreen from "../screens/Register";
-import { useEffect, useState } from "react";
-import { ActivityIndicator } from "react-native";
 
 const Stack = createNativeStackNavigator();
 

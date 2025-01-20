@@ -1,11 +1,15 @@
+import * as SecureStore from "expo-secure-store";
 import { useContext } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { TouchableOpacity, Text, View } from "react-native";
-import * as SecureStore from "expo-secure-store";
-// import Foundation from '@expo/vector-icons/Foundation';
-import { Feather, FontAwesome, Foundation } from "@expo/vector-icons";
+import { FontAwesome, Foundation } from "@expo/vector-icons";
 
 import { AuthContext } from "../contexts/auth";
+
+import HomeScreen from "../screens/HomeScreen";
+import ProfileScreen from "../screens/ProfileScreen";
+import AddPostScreen from "../screens/AddPost";
+import SearchScreen from "../screens/Search";
 
 const Tab = createBottomTabNavigator();
 
@@ -57,8 +61,42 @@ export default function TabNav() {
           ),
         }}
       />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
-      <Tab.Screen name="Logout" component={LogoutScreen} />
+      <Tab.Screen
+        name="Search"
+        component={SearchScreen}
+        options={{
+          headerTitle: () => (
+            <Text style={{ fontSize: 20, fontWeight: "bold" }}>Search</Text>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="AddPost"
+        component={AddPostScreen}
+        options={{
+          headerTitle: () => (
+            <Text style={{ fontSize: 20, fontWeight: "bold" }}>Add Post</Text>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          headerRight: () => (
+            <TouchableOpacity onPress={handleLogout}>
+              <Text
+                style={{ fontSize: 20, fontWeight: "bold", marginRight: 20 }}
+              >
+                Logout
+              </Text>
+            </TouchableOpacity>
+          ),
+          headerTitle: () => (
+            <Text style={{ fontSize: 20, fontWeight: "bold" }}>Profile</Text>
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }
