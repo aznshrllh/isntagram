@@ -6,8 +6,8 @@ import { FontAwesome, Foundation } from "@expo/vector-icons";
 
 import { AuthContext } from "../contexts/auth";
 
-import HomeScreen from "../screens/HomeScreen";
-import ProfileScreen from "../screens/ProfileScreen";
+import HomeScreen from "../screens/Home";
+import ProfileScreen from "../screens/Profile";
 import AddPostScreen from "../screens/AddPost";
 import SearchScreen from "../screens/Search";
 

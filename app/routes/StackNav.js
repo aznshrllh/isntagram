@@ -5,9 +5,9 @@ import { ActivityIndicator } from "react-native";
 
 import { AuthContext } from "../contexts/auth";
 
-import AddPostScreen from "../screens/AddPostScreen";
-import ProfileScreen from "../screens/ProfileScreen";
-import SearchScreen from "../screens/SearchScreen";
+import AddPostScreen from "../screens/AddPost";
+import ProfileScreen from "../screens/Profile";
+import SearchScreen from "../screens/Search";
 import DetailPostScreen from "../screens/DetailPost";
 import LoginScreen from "../screens/Login";
 import RegisterScreen from "../screens/Register";

@@ -94,23 +94,7 @@ export const GET_POSTS_BY_USER = gql`
 
 export const ADD_COMMENT = gql`
 ($postId: ID!, $comment: String!) {
-  addCommentToPost(postId: $postId, comment: $comment) {
-    _id
-    authorId
-    comments {
-      comment
-      username
-    }
-    content
-    createdAt
-    imgUrl
-    likes {
-      createdAt
-      username
-    }
-    tags
-    updatedAt
-  }
+  addCommentToPost(postId: $postId, comment: $comment) 
 }
 `;
 
